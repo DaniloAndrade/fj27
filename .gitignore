@@ -1,0 +1,6 @@
+Servers/
+RemoteSystemsTempFiles/
+.metadata/
+.recommenders/
+*.classpath
+casadocodigo/.classpath
