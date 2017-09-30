@@ -14,7 +14,8 @@ public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletI
 	protected Class<?>[] getServletConfigClasses() {
 		// TODO -generated method stub
 		return new Class[]{
-				AppWebConfiguration.class
+				AppWebConfiguration.class, 
+				JPAConfiguration.class
 		};
 	}
 
