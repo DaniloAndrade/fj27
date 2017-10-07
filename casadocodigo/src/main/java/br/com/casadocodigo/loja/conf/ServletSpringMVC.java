@@ -12,7 +12,6 @@ public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletI
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		// TODO -generated method stub
 		return new Class[]{
 				AppWebConfiguration.class, 
 				JPAConfiguration.class
@@ -21,7 +20,6 @@ public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletI
 
 	@Override
 	protected String[] getServletMappings() {
-		// TODO Auto-generated method stub
 		return new String[]{"/"};
 	}
 
