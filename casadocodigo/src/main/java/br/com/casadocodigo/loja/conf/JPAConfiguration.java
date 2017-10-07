@@ -1,5 +1,6 @@
 package br.com.casadocodigo.loja.conf;
 
+import java.util.Objects;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
@@ -31,11 +32,15 @@ public class JPAConfiguration {
 	
 	@Bean
 	public DataSource dataSource() {
+		String dbuser = System.getProperty("dbuser");
+		String dbpassword = System.getProperty("dbpassword");
+		Objects.requireNonNull(dbuser, "dbuser não foi definido");
+		Objects.requireNonNull(dbpassword, "dbpassword não foi definido");
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost:3306/casadocodigo");
-		dataSource.setUsername("root");
-		dataSource.setPassword("");
+		dataSource.setUsername(dbuser);
+		dataSource.setPassword(dbpassword);
 		return dataSource;
 	}
 	
