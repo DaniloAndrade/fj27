@@ -1,13 +1,15 @@
 package br.com.casadocodigo.loja.models;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 public class Product {
@@ -15,10 +17,17 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	
+
+	@NotBlank
 	private String title;
+	@Lob
+	@NotBlank
 	private String description;
+	@Min(30)
 	private int numberOfPages;
+
+	@DateTimeFormat
+	private Calendar releaseDate;
 	
 	@ElementCollection
 	private List<Price> prices = new ArrayList<>();
@@ -58,12 +67,24 @@ public class Product {
 	public void setPrices(List<Price> prices) {
 		this.prices = prices;
 	}
-	
-	
+
+	public Calendar getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(Calendar releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
 	@Override
 	public String toString() {
-		return "Product [title=" + title + ", description=" + description + ", numberOfPage=" + numberOfPages + "]";
+		return "Product{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", description='" + description + '\'' +
+				", numberOfPages=" + numberOfPages +
+				", releaseDate=" + releaseDate +
+				", prices=" + prices +
+				'}';
 	}
-	
-
 }

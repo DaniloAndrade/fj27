@@ -55,7 +55,7 @@ public class ProdutoController {
 		return modelAndView;
 	}
 
-	@InitBinder
+	//@InitBinder
 	public void initBinder(WebDataBinder dataBinder){
 		dataBinder.addValidators(new ProductValidator());
 	}

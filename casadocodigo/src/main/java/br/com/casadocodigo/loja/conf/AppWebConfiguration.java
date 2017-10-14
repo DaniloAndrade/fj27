@@ -4,6 +4,12 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.Formatter;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.format.datetime.DateFormatter;
+import org.springframework.format.datetime.DateFormatterRegistrar;
+import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -11,6 +17,12 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import br.com.casadocodigo.loja.controllers.HomeController;
 import br.com.casadocodigo.loja.daos.ProductDAO;
+
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 
 @EnableWebMvc
 @ComponentScan(basePackageClasses = {HomeController.class, ProductDAO.class})
@@ -35,6 +47,14 @@ public class AppWebConfiguration extends WebMvcConfigurerAdapter{
 		return messageSource;
 	}
 
+	@Bean
+	public FormattingConversionService mvcConversionService(){
+		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService(true);
+		DateFormatterRegistrar formatterRegistrar = new DateFormatterRegistrar();
+		formatterRegistrar.setFormatter(new DateFormatter("yyyy-MM-dd"));
+		formatterRegistrar.registerFormatters(conversionService);
+		return conversionService;
+	}
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
