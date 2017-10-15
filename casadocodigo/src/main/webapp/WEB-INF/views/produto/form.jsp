@@ -9,7 +9,7 @@
     <jsp:body>
         <div class="mdl-grid">
             <div class="mdl-cell mdl-cell--middle mdl-cell--6-col mdl-cell--3-offset">
-                <form method="post" action="${spring:mvcUrl("productSave").build()}">
+                <form method="post" action="${spring:mvcUrl("productSave").build()}" enctype="multipart/form-data">
 
                     <spring:hasBindErrors name="product">
                         <c:if test="${errors.hasFieldErrors('title')}">
@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <div class="mdl-cell mdl-cell--middle mdl-cell--12-col">
-                            <div class="mdl-textfield mdl-js-textfield ${titleError}">
+                            <div class="mdl-textfield mdl-js-textfield ${releaseDate}">
                                 <input class="mdl-textfield__input" id="releaseDate" type="date" name="releaseDate"
                                        value="${product.releaseDate}"/>
                                 <label class="mdl-textfield__label" for="title">Data de Publicação</label>
@@ -57,6 +57,16 @@
                                 <form:errors path="product.numberOfPages" cssClass="mdl-textfield__error"/>
                             </div>
                         </div>
+
+                        <div class="mdl-cell mdl-cell--middle mdl-cell--12-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ${titleError}">
+                                <input class="mdl-textfield__input" id="summary" type="file" name="summary"
+                                       value="${summary}"/>
+                                <label class="mdl-textfield__label" for="summary">Sumário</label>
+                                <form:errors path="summaryPath" cssClass="mdl-textfield__error"/>
+                            </div>
+                        </div>
+
                         <c:forEach items="${types}" varStatus="status" var="bookType">
                             <div class="mdl-cell mdl-cell--4-col">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">

@@ -7,8 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.casadocodigo.loja.daos.ProductDAO;
@@ -26,12 +28,18 @@ public class ProdutoController {
 	@Autowired
 	private ProductDAO productDAO;
 
+	@Autowired
+	private FileSaver fileSaver;
+
 	@Transactional
 	@RequestMapping(method=RequestMethod.POST, name = "productSave")
-	public ModelAndView adicionar(@Valid Product product, BindingResult bindingResult, RedirectAttributes attributes) {
+	public ModelAndView adicionar(MultipartFile summary, @Valid Product product, BindingResult bindingResult, RedirectAttributes attributes) {
 		if (bindingResult.hasErrors()){
 			return form(product);
 		}
+
+		String wepPath = fileSaver.write("uploaded-summaries", summary);
+		product.setSummaryPath(wepPath);
 
 		System.out.println("Cadastrando o produto:" + product);
 		productDAO.save(product);
@@ -52,6 +60,13 @@ public class ProdutoController {
 		ModelAndView modelAndView = new ModelAndView("produto/list");
 		List<Product> products = productDAO.listAll();
 		modelAndView.addObject("products", products);
+		return modelAndView;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}" , name = "visualizarProduto")
+	public ModelAndView show(@PathVariable("id") Integer id){
+		ModelAndView modelAndView = new ModelAndView("produto/show");
+		modelAndView.addObject("product", productDAO.findById(id));
 		return modelAndView;
 	}
 

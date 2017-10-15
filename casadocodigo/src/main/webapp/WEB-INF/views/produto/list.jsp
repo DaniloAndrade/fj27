@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
 <%--
   Created by IntelliJ IDEA.
@@ -25,6 +26,7 @@
                         <th>Description</th>
                         <th>NumberOfPages</th>
                         <th>Prices</th>
+                        <th></th>
                     </tr>
                     </thead>
 
@@ -39,6 +41,9 @@
                                 <c:forEach items="${product.prices}" var="price">
                                     ${price.value} - ${price.bookType}
                                 </c:forEach>
+                            </td>
+                            <td>
+                                <a href="${spring:mvcUrl('visualizarProduto').arg(0,product.id).build()}">Ver</a>
                             </td>
                         </tr>
                     </c:forEach>

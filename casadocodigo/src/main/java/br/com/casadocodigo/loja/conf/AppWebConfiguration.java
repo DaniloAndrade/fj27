@@ -1,5 +1,7 @@
 package br.com.casadocodigo.loja.conf;
 
+import br.com.casadocodigo.loja.models.ShoppingCart;
+import br.com.casadocodigo.loja.services.ProcessaPagamentoService;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -10,6 +12,9 @@ import org.springframework.format.datetime.DateFormatter;
 import org.springframework.format.datetime.DateFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -25,7 +30,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @EnableWebMvc
-@ComponentScan(basePackageClasses = {HomeController.class, ProductDAO.class})
+@ComponentScan(basePackageClasses = {HomeController.class, ProductDAO.class, ShoppingCart.class, ProcessaPagamentoService.class})
 public class AppWebConfiguration extends WebMvcConfigurerAdapter{
 
 	@Bean
@@ -34,7 +39,7 @@ public class AppWebConfiguration extends WebMvcConfigurerAdapter{
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".jsp");
-		
+		resolver.setExposedContextBeanNames("shoppingCart");
 		return resolver;
 	}
 
@@ -55,6 +60,18 @@ public class AppWebConfiguration extends WebMvcConfigurerAdapter{
 		formatterRegistrar.registerFormatters(conversionService);
 		return conversionService;
 	}
+
+
+	@Bean
+	public RestTemplate restTemplate(){
+		return new RestTemplate();
+	}
+
+	@Bean
+	public MultipartResolver multipartResolver(){
+		return new StandardServletMultipartResolver();
+	}
+
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();

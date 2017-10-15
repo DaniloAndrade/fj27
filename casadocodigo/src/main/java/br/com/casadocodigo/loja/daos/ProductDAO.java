@@ -2,6 +2,7 @@ package br.com.casadocodigo.loja.daos;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -25,5 +26,12 @@ public class ProductDAO {
 		TypedQuery<Product> query = em
 				.createQuery("SELECT distinct p from Product p join fetch p.prices", Product.class);
 		return query.getResultList();
+	}
+
+	public Product findById(Integer id) {
+		TypedQuery<Product> query = em.createQuery("select distinct p from Product p join fetch p.prices " +
+				"where p.id = :id", Product.class);
+		query.setParameter("id", id);
+		return query.getSingleResult();
 	}
 }

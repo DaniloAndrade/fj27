@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8" />
-	<title>Casa do Código</title>
-</head>
-<body>
-	<h1>Casa Do Código</h1>
-</body>
-</html>
+<%@	taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@	taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@	taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib prefix="template" tagdir="/WEB-INF/tags/template" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<template:template2>
+
+	<jsp:body>
+		Ola Mundo!
+	</jsp:body>
+</template:template2>
