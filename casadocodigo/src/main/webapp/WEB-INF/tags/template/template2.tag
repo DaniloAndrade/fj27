@@ -2,6 +2,7 @@
 <%@attribute name="extraStyles" fragment="true" %>
 <%@attribute name="titulo" fragment="true" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@tag pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -17,8 +18,8 @@
 </head>
 <body>
 
-<c:url value="/produtos/form" var="urlNovo"/>
-<c:url value="/produtos" var="urlProdutos"/>
+<%--<c:url value="/produtos/form" var="urlNovo"/>--%>
+<%--<c:url value="/produtos" var="urlProdutos"/>--%>
 
 <!-- Always shows a header, even in smaller screens. -->
 
@@ -27,8 +28,8 @@
         <div class="nav-wrapper container">
             <a href="#" class="brand-logo">Casa do Código</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="${urlNovo}">Novo Produto</a></li>
-                <li><a href="${urlProdutos}">Produtos</a></li>
+                <li><a href="${spring:mvcUrl('produtoFormulario').build()}">Novo Produto</a></li>
+                <li><a href="${spring:mvcUrl('produtoList').build()}">Produtos</a></li>
             </ul>
         </div>
     </nav>
@@ -36,13 +37,40 @@
 
 
 <main class="container">
+
+    <div class="row">
+        <c:if test="${not empty error}">
+        <div class="m12 s12 col">
+            <div class="card-panel deep-orange darken-1">
+                <div class="row">
+                    <div class="col l8 white-text">
+                        <h5>${error.titulo}</h5>
+                        <h6>${error.detalhe}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </c:if>
+        <c:if test="${not empty msg}">
+            <div class="m12 s12 col">
+                <div class="card-panel green">
+                    <div class="row">
+                        <div class="col l8 white-text">
+                            <h5>${msg.titulo}</h5>
+                            <h6>${msg.detalhe}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+    </div>
+
     <div class="row">
         <div class="col l12 s12">
-            <h2><jsp:invoke fragment="titulo"/></h2>
+            <h2>
+                <jsp:invoke fragment="titulo"/>
+            </h2>
         </div>
-        <c:if test="${not empty msg}">
-            <h4>${msg}</h4>
-        </c:if>
         <jsp:doBody/>
     </div>
 </main>
@@ -68,6 +96,7 @@
         </div>
     </div>
 </footer>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </body>
 </html>
