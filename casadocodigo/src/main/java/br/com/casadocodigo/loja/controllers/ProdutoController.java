@@ -1,7 +1,10 @@
 package br.com.casadocodigo.loja.controllers;
 
+import br.com.casadocodigo.loja.utils.Message;
 import br.com.casadocodigo.loja.validators.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -32,6 +35,7 @@ public class ProdutoController {
 	private FileSaver fileSaver;
 
 	@Transactional
+	@CacheEvict(value = "productList", allEntries = true)
 	@RequestMapping(method=RequestMethod.POST, name = "productSave")
 	public ModelAndView adicionar(MultipartFile summary, @Valid Product product, BindingResult bindingResult, RedirectAttributes attributes) {
 		if (bindingResult.hasErrors()){
@@ -43,11 +47,11 @@ public class ProdutoController {
 
 		System.out.println("Cadastrando o produto:" + product);
 		productDAO.save(product);
-		attributes.addFlashAttribute("msg", "Produto cadastrado com sucesso!");
+		attributes.addFlashAttribute("msg", new Message("Sucesso!", "Produto cadastrado com sucesso!"));
 		return new ModelAndView("redirect:produtos");
 	}
-	
-	@RequestMapping(value="/form", method = RequestMethod.GET)
+
+	@RequestMapping(value="/form", method = RequestMethod.GET, name = "produtoFormulario")
 	public ModelAndView form(Product product){
 		ModelAndView modelAndView = new ModelAndView("produto/form");
 		modelAndView.addObject("types", BookType.values());
@@ -55,7 +59,8 @@ public class ProdutoController {
 	}
 
 
-	@RequestMapping(method = RequestMethod.GET)
+	@Cacheable("productList")
+	@RequestMapping(method = RequestMethod.GET, name = "produtoList")
 	public ModelAndView products(){
 		ModelAndView modelAndView = new ModelAndView("produto/list");
 		List<Product> products = productDAO.listAll();

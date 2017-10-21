@@ -3,6 +3,7 @@ package br.com.casadocodigo.loja.controllers;
 import br.com.casadocodigo.loja.daos.ProductDAO;
 import br.com.casadocodigo.loja.models.*;
 import br.com.casadocodigo.loja.services.ProcessaPagamentoService;
+import br.com.casadocodigo.loja.utils.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
+import java.util.concurrent.Callable;
 
 @Controller
 @RequestMapping("shopping")
@@ -45,15 +47,15 @@ public class ShoppingCartController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/checkout")
-	public String checkout(RedirectAttributes redirectAttributes){
+	public Callable<String> checkout(RedirectAttributes redirectAttributes){
 		BigDecimal total = shoppingCart.getTotal();
-		return pagamentoService.processar(new PaymentData(total),
+		return () -> pagamentoService.processar(new PaymentData(total),
 				(rs) -> {
-					redirectAttributes.addFlashAttribute("msg", rs);
+					redirectAttributes.addFlashAttribute("msg", new Message("Sucesso!", rs));
 					return "redirect:/produtos";
 				},
 				(rs) -> {
-					redirectAttributes.addFlashAttribute("error", "Houve um problema no pagamento: " + rs);
+					redirectAttributes.addFlashAttribute("error", new Message("Falhou!", "Houve um problema no pagamento: " + rs));
 					return "redirect:/shopping";
 				});
 	}
