@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.concurrent.Callable;
 
 @Controller
-@RequestMapping("shopping")
+@RequestMapping("/shopping")
 public class ShoppingCartController {
 
 	@Autowired
@@ -41,7 +41,7 @@ public class ShoppingCartController {
 		return item;
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET, name = "actionCarrinho")
 	public ModelAndView items(){
 		return new ModelAndView("shopping/items");
 	}

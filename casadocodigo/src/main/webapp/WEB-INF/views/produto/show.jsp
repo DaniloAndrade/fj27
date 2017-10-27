@@ -2,6 +2,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html class="no-js" lang="pt">
@@ -101,6 +102,7 @@
 		
 		<section class="buy-options clearfix">
 			<form action="${shoppingCartUrl}" method="post" class="container">
+
 				<input type="hidden" value="${product.id}" name="productId"/>
 				<ul id="variants" class="clearfix">
 					<c:forEach items="${product.prices}" var="price">
@@ -115,7 +117,7 @@
 						</li>
 					</c:forEach>
 				</ul>
-
+				<security:csrfInput/>
 				<input type="submit" class="submit-image icon-basket-alt" alt="Compre agora" title="Compre agora '${product.title}'!" value="comprar"/>
 			</form>
 		</section>

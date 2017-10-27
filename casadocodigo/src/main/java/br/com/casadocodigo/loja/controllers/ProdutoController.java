@@ -59,7 +59,7 @@ public class ProdutoController {
 	}
 
 
-	@Cacheable("productList")
+	@Cacheable(value = "productList")
 	@RequestMapping(method = RequestMethod.GET, name = "produtoList")
 	public ModelAndView products(){
 		ModelAndView modelAndView = new ModelAndView("produto/list");

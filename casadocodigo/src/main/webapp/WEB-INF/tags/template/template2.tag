@@ -3,6 +3,7 @@
 <%@attribute name="titulo" fragment="true" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <%@tag pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -19,7 +20,8 @@
 <body>
 
 <%--<c:url value="/produtos/form" var="urlNovo"/>--%>
-<%--<c:url value="/produtos" var="urlProdutos"/>--%>
+<%--<c:url value="/produtos/form" var="urlNovo"/>--%>
+<c:url value="/logout" var="sair"/>
 
 <!-- Always shows a header, even in smaller screens. -->
 
@@ -28,8 +30,24 @@
         <div class="nav-wrapper container">
             <a href="#" class="brand-logo">Casa do Código</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="${spring:mvcUrl('produtoFormulario').build()}">Novo Produto</a></li>
+
+                <li><a href="${spring:mvcUrl('actionCarrinho').build()}">Carrinho</a></li>
                 <li><a href="${spring:mvcUrl('produtoList').build()}">Produtos</a></li>
+
+                <security:authorize access="isAuthenticated()">
+                    <security:authentication property="principal" var="user"/>
+                    <security:authorize access="hasAnyRole('ROLE_ADMIN')">
+                        <li><a href="${spring:mvcUrl('produtoFormulario').build()}">Novo Produto</a></li>
+                    </security:authorize>
+                    <li>Olá ${user.nome}</li>
+                    <li><a href="${sair}">Sair</a></li>
+                </security:authorize>
+
+                <security:authorize access="isAnonymous()">
+                    <li>Bem Vindo</li>
+                    <li><a href="${spring:mvcUrl('actionLogin').build()}">Logar</a></li>
+                </security:authorize>
+
             </ul>
         </div>
     </nav>
