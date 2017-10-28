@@ -1,0 +1,11 @@
+html, body {
+    height: 100%;
+}
+main.container {
+    position: relative;
+    min-height: calc(100% - 248px);
+}
+footer.page-footer {
+    position: relative;
+    width: 100%;
+}
