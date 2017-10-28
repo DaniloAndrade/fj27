@@ -3,9 +3,9 @@ html, body {
 }
 main.container {
     position: relative;
+    min-height: calc(100% - 248px);
 }
 footer.page-footer {
-    position: absolute;
+    position: relative;
     width: 100%;
-    bottom: 0px;
 }
