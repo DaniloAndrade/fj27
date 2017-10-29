@@ -2,6 +2,7 @@
 <%@attribute name="extraStyles" fragment="true" %>
 <%@attribute name="titulo" fragment="true" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <%@tag pageEncoding="UTF-8" %>
@@ -30,16 +31,18 @@
         <div class="nav-wrapper container">
             <a href="#" class="brand-logo">Casa do Código</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="?locale=pt_BR">&#x1F1E7;&#x1F1F7;</a></li>
+                <li><a href="?locale=en_US">&#x1F1FA;&#x1F1F8;</a></li>
 
-                <li><a href="${spring:mvcUrl('actionCarrinho').build()}">Carrinho</a></li>
-                <li><a href="${spring:mvcUrl('produtoList').build()}">Produtos</a></li>
+                <li><a href="${spring:mvcUrl('actionCarrinho').build()}"><fmt:message key="navigation.menu.shopping"/></a></li>
+                <li><a href="${spring:mvcUrl('produtoList').build()}"><fmt:message key="navigation.menu.products"/></a></li>
 
                 <security:authorize access="isAuthenticated()">
                     <security:authentication property="principal" var="user"/>
                     <security:authorize access="hasAnyRole('ROLE_ADMIN')">
-                        <li><a href="${spring:mvcUrl('produtoFormulario').build()}">Novo Produto</a></li>
+                        <li><a href="${spring:mvcUrl('produtoFormulario').build()}"><fmt:message key="navigation.menu.form.products"/></a></li>
                     </security:authorize>
-                    <li>Olá ${user.nome}</li>
+                    <li><spring:message code="users.welcome" arguments="${user.nome}"/></li>
                     <li><a href="${sair}">Sair</a></li>
                 </security:authorize>
 
